@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<!-- [2026-06-08-10-30-00 EST] -->
+<!-- ESRI_Crime_Problem_Management_Dashboard/docs/how_to_add_a_crime_problem_interactive.html -->
+<!-- Author: R. A. Carucci -->
+<!-- Purpose: Interactive, self-contained checklist version of the How to Add a Crime Problem guide for distribution to command staff. -->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>How to Add a Crime Problem - Interactive Guide</title>
+<style>
+  :root {
+    --hpd-blue: #14375a;
+    --hpd-blue-light: #1f4e79;
+    --accent: #2e7d32;
+    --bg: #f4f6f8;
+    --card: #ffffff;
+    --border: #d6dde4;
+    --text: #1c2733;
+    --muted: #5a6b7b;
+    --warn-bg: #fff7e6;
+    --warn-border: #e0a800;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+  }
+  header {
+    background: linear-gradient(135deg, var(--hpd-blue), var(--hpd-blue-light));
+    color: #fff;
+    padding: 28px 24px 22px;
+  }
+  header .wrap { max-width: 880px; margin: 0 auto; }
+  header h1 { margin: 0 0 6px; font-size: 1.6rem; }
+  header p { margin: 0; color: #cfe0f0; font-size: 0.95rem; }
+  main { max-width: 880px; margin: 0 auto; padding: 20px 24px 60px; }
+
+  .progress-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin: 18px 0 22px;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    box-shadow: 0 2px 6px rgba(20,55,90,0.06);
+  }
+  .progress-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .progress-head strong { font-size: 1rem; }
+  .progress-count { color: var(--muted); font-size: 0.9rem; }
+  .bar { height: 14px; background: #e6ebf0; border-radius: 8px; overflow: hidden; }
+  .bar > span {
+    display: block;
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #2e7d32, #43a047);
+    transition: width 0.25s ease;
+  }
+  .controls { margin-top: 12px; display: flex; gap: 10px; flex-wrap: wrap; }
+  button {
+    font: inherit;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: #fff;
+    color: var(--hpd-blue);
+    border-radius: 7px;
+    padding: 7px 14px;
+  }
+  button:hover { background: #eef3f8; }
+  button.print { background: var(--hpd-blue); color: #fff; border-color: var(--hpd-blue); }
+  button.print:hover { background: var(--hpd-blue-light); }
+
+  .intro {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--hpd-blue);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    font-size: 0.96rem;
+  }
+
+  details.section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+  }
+  details.section[open] { box-shadow: 0 2px 6px rgba(20,55,90,0.05); }
+  summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 14px 18px;
+    font-weight: 600;
+    font-size: 1.05rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--hpd-blue);
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary .chev { transition: transform 0.2s; color: var(--muted); font-size: 0.8rem; }
+  details[open] summary .chev { transform: rotate(90deg); }
+  summary .sec-status {
+    margin-left: auto;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--muted);
+    background: #eef3f8;
+    border-radius: 20px;
+    padding: 3px 10px;
+  }
+  summary .sec-status.done { color: #fff; background: var(--accent); }
+  .section-body { padding: 4px 18px 16px; }
+
+  ul.steps { list-style: none; margin: 0; padding: 0; }
+  ul.steps li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 9px 6px;
+    border-radius: 7px;
+  }
+  ul.steps li:hover { background: #f7fafc; }
+  ul.steps input[type="checkbox"] {
+    width: 20px; height: 20px;
+    margin-top: 2px;
+    flex-shrink: 0;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  ul.steps label { cursor: pointer; }
+  ul.steps li.checked label { color: var(--muted); text-decoration: line-through; }
+  .substeps { margin: 6px 0 0; padding-left: 18px; color: var(--muted); font-size: 0.92rem; }
+  .substeps li { display: list-item; padding: 1px 0; }
+
+  .note-field { margin: 6px 0 2px 32px; }
+  .note-field textarea {
+    width: 100%;
+    min-height: 38px;
+    border: 1px dashed var(--border);
+    border-radius: 6px;
+    padding: 6px 8px;
+    font: inherit;
+    font-size: 0.9rem;
+    resize: vertical;
+    background: #fcfdfe;
+  }
+  .note-field label { font-size: 0.78rem; color: var(--muted); display: block; margin-bottom: 2px; }
+
+  .gotchas {
+    background: var(--warn-bg);
+    border: 1px solid var(--warn-border);
+    border-radius: 10px;
+    padding: 14px 18px 14px 20px;
+    margin-top: 20px;
+  }
+  .gotchas h2 { margin: 0 0 8px; font-size: 1.05rem; color: #8a6d00; }
+  .gotchas ul { margin: 0; padding-left: 20px; }
+  .gotchas li { margin-bottom: 6px; }
+
+  footer {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 0 24px 40px;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+  .pre {
+    background: #eef3f8;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-family: "SF Mono", Consolas, Menlo, monospace;
+    font-size: 0.85em;
+  }
+  @media print {
+    .progress-card .controls, .chev { display: none; }
+    details.section { box-shadow: none; }
+    summary { color: #000; }
+    body { background: #fff; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>How to Add a Crime Problem</h1>
+    <p>Interactive Step-by-Step Guide | HPD SSOCC | Crime Problem Management (CPM) 2.0</p>
+  </div>
+</header>
+
+<main>
+  <div class="intro">
+    A crime problem in the Crime Problem Management (CPM) framework is a defined area and time window where a pattern of crime or disorder warrants focused attention. Documenting a problem creates a shared record that ties incidents, calls for service, responses, and evaluations together so analysts and command staff can plan, act, and measure results. Work top to bottom. Check off each step as you complete it. Your progress and any notes you type are saved automatically in this browser on this device.
+  </div>
+
+  <div class="progress-card">
+    <div class="progress-head">
+      <strong>Your progress</strong>
+      <span class="progress-count"><span id="doneCount">0</span> of <span id="totalCount">0</span> steps complete</span>
+    </div>
+    <div class="bar"><span id="barFill"></span></div>
+    <div class="controls">
+      <button type="button" onclick="expandAll()">Expand all</button>
+      <button type="button" onclick="collapseAll()">Collapse all</button>
+      <button type="button" onclick="resetAll()">Reset checklist</button>
+      <button type="button" class="print" onclick="window.print()">Print / Save as PDF</button>
+    </div>
+  </div>
+
+  <!-- Prerequisites -->
+  <details class="section" open>
+    <summary><span class="chev">&#9654;</span> Before you start: Prerequisites <span class="sec-status">0/4</span></summary>
+    <div class="section-body">
+      <ul class="steps">
+        <li><input type="checkbox" id="p1"><label for="p1">AGOL access at <strong>Creator</strong> level or higher. Creator access is required to create and edit problems. Contributor-level access can view but not edit.</label></li>
+        <li><input type="checkbox" id="p2"><label for="p2">ArcGIS Pro 3.x installed and signed in to the same AGOL organization.</label></li>
+        <li><input type="checkbox" id="p3"><label for="p3">Crime Problem Manager open in Experience Builder.</label></li>
+        <li><input type="checkbox" id="p4"><label for="p4">Crimes and Calls for Service (CFS) feature layers loaded and accessible in both the web app and the Pro project.</label></li>
+      </ul>
+    </div>
+  </details>
+
+  <!-- Section 1 -->
+  <details class="section">
+    <summary><span class="chev">&#9654;</span> Section 1: Open the Crime Problem Manager <span class="sec-status">0/5</span></summary>
+    <div class="section-body">
+      <ul class="steps">
+        <li><input type="checkbox" id="s1a"><label for="s1a">Sign in to ArcGIS Online at the HPD organization URL.</label></li>
+        <li><input type="checkbox" id="s1b"><label for="s1b">From the Content or Apps menu, locate the Crime Problem Manager app.</label></li>
+        <li><input type="checkbox" id="s1c"><label for="s1c">Click the app to launch it in Experience Builder.</label></li>
+        <li><input type="checkbox" id="s1d"><label for="s1d">Confirm you are signed in with an account that has Creator-level access.</label></li>
+        <li><input type="checkbox" id="s1e"><label for="s1e">Navigate to the Problem creation interface (the main problems panel or list view).</label></li>
+      </ul>
+    </div>
+  </details>
+
+  <!-- Section 2 -->
+  <details class="section">
+    <summary><span class="chev">&#9654;</span> Section 2: Create a New Problem Record <span class="sec-status">0/5</span></summary>
+    <div class="section-body">
+      <ul class="steps">
+        <li><input type="checkbox" id="s2a"><label for="s2a">Click <strong>New Problem</strong>.</label></li>
+        <li>
+          <input type="checkbox" id="s2b">
+          <div>
+            <label for="s2b">Fill in the required fields:</label>
+            <ul class="substeps">
+              <li><strong>Name:</strong> a short descriptive title for the problem.</li>
+              <li><strong>Type:</strong> the problem category (for example, burglary pattern, robbery series).</li>
+              <li><strong>District:</strong> the HPD district the problem falls in.</li>
+              <li><strong>Priority:</strong> the assigned priority level.</li>
+              <li><strong>Start date:</strong> the beginning of the problem time window.</li>
+              <li><strong>Description / narrative:</strong> a summary of the pattern and why it is being tracked.</li>
+            </ul>
+          </div>
+        </li>
+        <li><input type="checkbox" id="s2c"><label for="s2c">Review the entries for accuracy.</label></li>
+        <li><input type="checkbox" id="s2d"><label for="s2d">Click <strong>Save</strong> to commit the initial problem record.</label></li>
+        <li><input type="checkbox" id="s2e"><label for="s2e">Note the problem name or ID. You will reference it in ArcGIS Pro.</label></li>
+      </ul>
+      <div class="note-field">
+        <label for="note-problemid">Record the problem name / ID here for reference:</label>
+        <textarea id="note-problemid" placeholder="e.g. Northside Burglary Pattern / ID 1042"></textarea>
+      </div>
+    </div>
+  </details>
+
+  <!-- Section 3 -->
+  <details class="section">
+    <summary><span class="chev">&#9654;</span> Section 3: Define the Problem Boundary in ArcGIS Pro <span class="sec-status">0/6</span></summary>
+    <div class="section-body">
+      <ul class="steps">
+        <li><input type="checkbox" id="s3a"><label for="s3a">Open the Crime Problem Analyst Desktop App (the ArcGIS Pro project).</label></li>
+        <li><input type="checkbox" id="s3b"><label for="s3b">Open the task pane and select the draw boundary task.</label></li>
+        <li><input type="checkbox" id="s3c"><label for="s3c">Activate the polygon sketch tool from the task step.</label></li>
+        <li><input type="checkbox" id="s3d"><label for="s3d">Sketch the problem boundary on the map around the affected area.</label></li>
+        <li><input type="checkbox" id="s3e"><label for="s3e">Attribute the boundary to the problem record created in Section 2 (select the matching problem name or ID).</label></li>
+        <li><input type="checkbox" id="s3f"><label for="s3f">Save the edits to commit the boundary.</label></li>
+      </ul>
+    </div>
+  </details>
+
+  <!-- Section 4 -->
+  <details class="section">
+    <summary><span class="chev">&#9654;</span> Section 4: Associate Incidents with the Problem <span class="sec-status">0/5</span></summary>
+    <div class="section-body">
+      <ul class="steps">
+        <li><input type="checkbox" id="s4a"><label for="s4a">In the ArcGIS Pro task pane, select the incident association task.</label></li>
+        <li><input type="checkbox" id="s4b"><label for="s4b">Confirm the task is targeting the active problem and its boundary.</label></li>
+        <li><input type="checkbox" id="s4c"><label for="s4c">Run the task to link Crimes and CFS records that fall within the boundary and the problem time range.</label></li>
+        <li><input type="checkbox" id="s4d"><label for="s4d">Review the count of associated incidents returned by the task.</label></li>
+        <li><input type="checkbox" id="s4e"><label for="s4e">Save the results.</label></li>
+      </ul>
+    </div>
+  </details>
+
+  <!-- Section 5 -->
+  <details class="section">
+    <summary><span class="chev">&#9654;</span> Section 5: Document the Initial Response <span class="sec-status">0/5</span></summary>
+    <div class="section-body">
+      <ul class="steps">
+        <li><input type="checkbox" id="s5a"><label for="s5a">Return to the Crime Problem Manager in Experience Builder.</label></li>
+        <li><input type="checkbox" id="s5b"><label for="s5b">Open the problem record you created.</label></li>
+        <li><input type="checkbox" id="s5c"><label for="s5c">Add a response entry describing the planned or initial action.</label></li>
+        <li><input type="checkbox" id="s5d"><label for="s5d">Set the problem status to <strong>Active</strong>.</label></li>
+        <li><input type="checkbox" id="s5e"><label for="s5e">Save the record.</label></li>
+      </ul>
+    </div>
+  </details>
+
+  <!-- Section 6 -->
+  <details class="section">
+    <summary><span class="chev">&#9654;</span> Section 6: Verify the Problem Appears on the Dashboard <span class="sec-status">0/4</span></summary>
+    <div class="section-body">
+      <ul class="steps">
+        <li><input type="checkbox" id="s6a"><label for="s6a">Open the Crime Problem Dashboard from AGOL.</label></li>
+        <li><input type="checkbox" id="s6b"><label for="s6b">Confirm the new problem is visible in the active problems list.</label></li>
+        <li><input type="checkbox" id="s6c"><label for="s6c">Check that district, priority, and incident count display correctly.</label></li>
+        <li><input type="checkbox" id="s6d"><label for="s6d">If anything is missing, return to the relevant tool and confirm the record was saved.</label></li>
+      </ul>
+    </div>
+  </details>
+
+  <!-- Notes and gotchas -->
+  <div class="gotchas">
+    <h2>Notes and Gotchas</h2>
+    <ul>
+      <li>The Crimes layer AGOL ID ends in <span class="pre">6837</span>. Confirm this exact layer is set in the ArcGIS Pro project data source settings before associating incidents. A wrong layer source will produce wrong or empty results.</li>
+      <li>As of the Training and Knowledge Transfer phase, the dashboard is not yet fully operational. Some display issues may be present and are expected.</li>
+      <li><strong>Access note for Captain Weber:</strong> Creating and editing problems requires Creator-level AGOL access. Contributor-level access can view problems only. Until your Creator license is in place, the New Problem, Save, and edit controls will be unavailable to you. For the first few crime problems we will work through these steps together: you drive the walk-through and decisions, and R. A. Carucci performs the create, save, and edit actions in AGOL and ArcGIS Pro. Once your license is updated you can complete every step yourself.</li>
+    </ul>
+  </div>
+</main>
+
+<footer>
+  Author: R. A. Carucci | HPD SSOCC | Source document date: 2026-06-05 | Interactive version: 2026-06-08.
+  Progress and notes are stored only in this browser on this device. They are not uploaded anywhere. Use Print / Save as PDF to keep a fixed copy.
+</footer>
+
+<script>
+  var STORAGE_KEY = "cpm_add_problem_guide_v1";
+
+  function loadState() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+    catch (e) { return {}; }
+  }
+  function saveState(state) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+    catch (e) { /* storage may be unavailable; guide still works for this session */ }
+  }
+
+  var state = loadState();
+  var checkboxes = Array.prototype.slice.call(document.querySelectorAll('ul.steps input[type="checkbox"]'));
+  var notes = Array.prototype.slice.call(document.querySelectorAll('textarea[id^="note-"]'));
+
+  function updateSectionStatus(section) {
+    var boxes = section.querySelectorAll('input[type="checkbox"]');
+    if (!boxes.length) return;
+    var done = 0;
+    boxes.forEach(function (b) { if (b.checked) done++; });
+    var status = section.querySelector('.sec-status');
+    if (status) {
+      status.textContent = done + "/" + boxes.length;
+      if (done === boxes.length) { status.classList.add('done'); status.textContent = "Done"; }
+      else { status.classList.remove('done'); }
+    }
+  }
+
+  function updateProgress() {
+    var done = checkboxes.filter(function (c) { return c.checked; }).length;
+    var total = checkboxes.length;
+    document.getElementById('doneCount').textContent = done;
+    document.getElementById('totalCount').textContent = total;
+    document.getElementById('barFill').style.width = total ? (done / total * 100) + "%" : "0%";
+  }
+
+  function applyRowStyle(cb) {
+    var li = cb.closest('li');
+    if (li) { li.classList.toggle('checked', cb.checked); }
+  }
+
+  checkboxes.forEach(function (cb) {
+    if (state[cb.id]) { cb.checked = true; }
+    applyRowStyle(cb);
+    cb.addEventListener('change', function () {
+      state[cb.id] = cb.checked;
+      saveState(state);
+      applyRowStyle(cb);
+      updateSectionStatus(cb.closest('details.section'));
+      updateProgress();
+    });
+  });
+
+  notes.forEach(function (ta) {
+    if (state[ta.id]) { ta.value = state[ta.id]; }
+    ta.addEventListener('input', function () {
+      state[ta.id] = ta.value;
+      saveState(state);
+    });
+  });
+
+  document.querySelectorAll('details.section').forEach(updateSectionStatus);
+  updateProgress();
+
+  function expandAll() { document.querySelectorAll('details.section').forEach(function (d) { d.open = true; }); }
+  function collapseAll() { document.querySelectorAll('details.section').forEach(function (d) { d.open = false; }); }
+  function resetAll() {
+    if (!confirm("Clear all checkmarks and notes on this device?")) return;
+    state = {};
+    saveState(state);
+    checkboxes.forEach(function (cb) { cb.checked = false; applyRowStyle(cb); });
+    notes.forEach(function (ta) { ta.value = ""; });
+    document.querySelectorAll('details.section').forEach(updateSectionStatus);
+    updateProgress();
+  }
+</script>
+</body>
+</html>
