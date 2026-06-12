@@ -9,6 +9,8 @@ A crime problem in the Crime Problem Management (CPM) framework is a defined are
 - Crime Problem Manager open in Experience Builder.
 - Crimes and Calls for Service (CFS) feature layers loaded and accessible in both the web app and the Pro project.
 
+Before creating a problem area in the CrimeProblemAnalyst ArcGIS Pro project, complete Step 2 of the project's built-in "Getting started" task: open the Portal tab, then My Content, then add the Crime Problem Analyst web map (item ID d5556e2f375c4adf8c0452e14f34177b, AGOL folder CPM_Production). This web map carries the preconfigured layers required for problem creation. Source: C. Tenah follow-up email, confirmed 2026.
+
 ## Section 1: Open the Crime Problem Manager (Experience Builder)
 
 1. Sign in to ArcGIS Online at the HPD organization URL.
@@ -65,7 +67,9 @@ A crime problem in the Crime Problem Management (CPM) framework is a defined are
 
 ## Notes and Gotchas
 
-- The Crimes layer AGOL ID ends in 6837. Confirm this exact layer is set in the ArcGIS Pro project data source settings before associating incidents. A wrong layer source will produce wrong or empty results.
+- The Crimes layer AGOL ID ends in 6837. Note that 6837 is the last four characters of the layer ITEM ID (full item ID: bc108c0cb375461cb6645b47b80f6837), not the service URL. The service URL uses a different token, so do not match on 6837 when setting the data source by URL. Confirm this exact layer is set in the ArcGIS Pro project data source settings before associating incidents. A wrong layer source will produce wrong or empty results. Authoritative service URLs confirmed by C. Tenah:
+  - Crimes: https://services1.arcgis.com/JYl0Hy0wQdiiV0qh/arcgis/rest/services/Crimes_2153d1ef33a0414291a8eb54b938507b/FeatureServer
+  - Calls For Service: https://services1.arcgis.com/JYl0Hy0wQdiiV0qh/arcgis/rest/services/CallsForService_2153d1ef33a0414291a8eb54b938507b/FeatureServer
 - As of the Training and Knowledge Transfer phase, the dashboard is not yet fully operational. Some display issues may be present and are expected.
 - Captain Weber is on Contributor-level access and cannot edit problems. He can view only. Creator upgrade is pending.
 

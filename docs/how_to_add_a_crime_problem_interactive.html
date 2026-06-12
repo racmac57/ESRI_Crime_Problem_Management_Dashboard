@@ -223,13 +223,14 @@
 
   <!-- Prerequisites -->
   <details class="section" open>
-    <summary><span class="chev">&#9654;</span> Before you start: Prerequisites <span class="sec-status">0/4</span></summary>
+    <summary><span class="chev">&#9654;</span> Before you start: Prerequisites <span class="sec-status">0/5</span></summary>
     <div class="section-body">
       <ul class="steps">
         <li><input type="checkbox" id="p1"><label for="p1">AGOL access at <strong>Creator</strong> level or higher. Creator access is required to create and edit problems. Contributor-level access can view but not edit.</label></li>
         <li><input type="checkbox" id="p2"><label for="p2">ArcGIS Pro 3.x installed and signed in to the same AGOL organization.</label></li>
         <li><input type="checkbox" id="p3"><label for="p3">Crime Problem Manager open in Experience Builder.</label></li>
         <li><input type="checkbox" id="p4"><label for="p4">Crimes and Calls for Service (CFS) feature layers loaded and accessible in both the web app and the Pro project.</label></li>
+        <li><input type="checkbox" id="p5"><label for="p5">Before creating a problem area in the CrimeProblemAnalyst ArcGIS Pro project, complete Step 2 of the project's built-in "Getting started" task: open the Portal tab, then My Content, then add the Crime Problem Analyst web map (item ID <span class="pre">d5556e2f375c4adf8c0452e14f34177b</span>, AGOL folder CPM_Production). This web map carries the preconfigured layers required for problem creation. Source: C. Tenah follow-up email, confirmed 2026.</label></li>
       </ul>
     </div>
   </details>
@@ -339,7 +340,12 @@
   <div class="gotchas">
     <h2>Notes and Gotchas</h2>
     <ul>
-      <li>The Crimes layer AGOL ID ends in <span class="pre">6837</span>. Confirm this exact layer is set in the ArcGIS Pro project data source settings before associating incidents. A wrong layer source will produce wrong or empty results.</li>
+      <li>The Crimes layer AGOL ID ends in <span class="pre">6837</span>. Note that 6837 is the last four characters of the layer ITEM ID (full item ID: <span class="pre">bc108c0cb375461cb6645b47b80f6837</span>), not the service URL. The service URL uses a different token, so do not match on 6837 when setting the data source by URL. Confirm this exact layer is set in the ArcGIS Pro project data source settings before associating incidents. A wrong layer source will produce wrong or empty results. Authoritative service URLs confirmed by C. Tenah:
+        <ul>
+          <li>Crimes: <span class="pre">https://services1.arcgis.com/JYl0Hy0wQdiiV0qh/arcgis/rest/services/Crimes_2153d1ef33a0414291a8eb54b938507b/FeatureServer</span></li>
+          <li>Calls For Service: <span class="pre">https://services1.arcgis.com/JYl0Hy0wQdiiV0qh/arcgis/rest/services/CallsForService_2153d1ef33a0414291a8eb54b938507b/FeatureServer</span></li>
+        </ul>
+      </li>
       <li>As of the Training and Knowledge Transfer phase, the dashboard is not yet fully operational. Some display issues may be present and are expected.</li>
       <li><strong>Access note for Captain Weber:</strong> Creating and editing problems requires Creator-level AGOL access. Contributor-level access can view problems only. Until your Creator license is in place, the New Problem, Save, and edit controls will be unavailable to you. For the first few crime problems we will work through these steps together: you drive the walk-through and decisions, and R. A. Carucci performs the create, save, and edit actions in AGOL and ArcGIS Pro. Once your license is updated you can complete every step yourself.</li>
     </ul>

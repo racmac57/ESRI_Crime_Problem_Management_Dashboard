@@ -22,6 +22,7 @@ HPD SSOCC deployment of the Esri Crime Problem Management (CPM) solution version
 ## Output Rules
 
 - Never use em-dashes or en-dashes in any file content. Use plain ASCII hyphens or rewrite the sentence.
+- Agent sessions (Claude in Chrome, Claude in Excel, etc.) must write logs to `scripts/agol_audit_output/session_logs/` or another dedicated log path. Never save a log to the path of an existing data file.
 
 ## How Claude Agents Should Help
 
